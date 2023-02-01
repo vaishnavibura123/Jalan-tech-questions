@@ -1,0 +1,95 @@
+package org.Jalan_Technology;
+import java.util.*;
+class Car {
+
+    String serviceCode;
+
+    String service;
+
+    Map<String, Integer> map;
+
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
+    }
+
+    public void setService(String service) {
+        this.service = service;
+    }
+
+    public void setMap(Map<String, Integer> map) {
+        this.map = map;
+    }
+
+    public String getServiceCode() {
+        return serviceCode;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public Map<String, Integer> getMap() {
+        return map;
+    }
+
+}
+
+class CarHolder {
+    static List<Car> list = new ArrayList<>();
+
+    static void init(String serviceCode, String serviceType, int carA, int carB, int carC) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("Hatchback", carA);
+        map.put("Sedan", carB);
+        map.put("SUV", carC);
+
+        Car c = new Car();
+
+        c.setMap(map);
+        c.setServiceCode(serviceCode);
+        c.setService(serviceType);
+        list.add(c);
+    }
+
+    static int getAmount(String serviceCode, String carType) {
+        for (Car c : list) {
+            if (c.getServiceCode().equals(serviceCode)) {
+                Map<String, Integer> map = c.getMap();
+                Integer integer = map.get(carType);
+                return integer;
+            }
+        }
+        return 0;
+    }
+
+}
+
+public class Question_2 {
+    public static void main(String[] args) {
+        CarHolder.init("BS01", "Basic Servicing", 2000, 4000, 5000);
+        CarHolder.init("EF01", "Engine Fixing", 5000, 8000, 10000);
+        CarHolder.init("CF01", "Clutch Fixing", 2000, 4000, 6000);
+        CarHolder.init("BF01", "Brake Fixing", 1000, 1500, 2500);
+        CarHolder.init("GF01", "Gear Fixing", 3000, 6000, 8000);
+        Scanner s = new Scanner(System.in);
+        int bill = 0;
+        System.out.print("My car Service : ");
+        int c = s.nextInt();
+
+        for (int i = 1; i <= c; i++) {
+            System.out.print("Type of car : ");
+            String carType = s.next();
+            System.out.print("No of car in type of " + carType + " :");
+            int serviceCodeCount = s.nextInt();
+            List<String> serviceCodeList = new ArrayList<>();
+            for (int j = 1; j <= serviceCodeCount; j++) {
+                System.out.print("Enter " + j + " service code number :");
+                serviceCodeList.add(s.next());
+            }
+            for (String s1 : serviceCodeList)
+                bill += CarHolder.getAmount(s1, carType);
+        }
+        System.out.println("Total Bill :" + bill);
+
+    }
+}
